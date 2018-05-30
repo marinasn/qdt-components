@@ -86,6 +86,8 @@ const QdtComponents = class {
             qAppp.field(locField).selectValues(res, false, true);
           }
         }
+      } else {
+        qAppp.clearAll();
       }
     } catch (error) {
       console.log(error);
