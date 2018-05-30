@@ -48,6 +48,7 @@ const qApp = async (config) => {
           }
 
           localStorage.setItem('selectItemLocalStorage', JSON.stringify(loc_selections));
+          localStorage.setItem('lastQlikAppId', app.id);
           loc_selections = [];
         });
         resolve(app);
