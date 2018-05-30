@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import qApp from './qApp';
@@ -47,6 +48,49 @@ const QdtComponents = class {
       reject(error);
     }
   });
+
+  async setSelections(selections) {
+    try {
+      const { qAppPromise } = this;
+      const qAppp = await qAppPromise;
+
+      const valuesFromLocalStorage = JSON.parse(selections);
+
+      console.log(`setSelections${JSON.stringify(valuesFromLocalStorage)}`);
+
+      if (valuesFromLocalStorage !== null && valuesFromLocalStorage.length > 0) {
+        for (let i = 0; i < valuesFromLocalStorage.length; i++) {
+          const locField = valuesFromLocalStorage[i].field;
+          const locSelected = valuesFromLocalStorage[i].selected;
+          let selectedArrayNotTrimmed = [];
+
+          selectedArrayNotTrimmed = locSelected.split(',');
+          const selectedArrayTrimmed = [];
+
+          for (let j = 0; j < selectedArrayNotTrimmed.length; j++) {
+            selectedArrayTrimmed[j] = selectedArrayNotTrimmed[j].trim();
+          }
+          if (selectedArrayTrimmed[0] == null) {
+            let res = [];
+            res = locSelected.split(',').map(item => parseInt(item, 10));
+
+            qAppp.field(locField).selectValues(res, false, true);
+          } else if (selectedArrayTrimmed[0] === 'ALL') {
+            qAppp.field(locField).selectAll();
+          } else {
+            const res = [];
+
+            for (let k = 0; k < selectedArrayTrimmed.length; k++) {
+              res.push({ qText: selectedArrayTrimmed[k] });
+            }
+            qAppp.field(locField).selectValues(res, false, true);
+          }
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 };
 
 export default QdtComponents;
