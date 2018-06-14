@@ -53,10 +53,12 @@ const QdtComponents = class {
     try {
       const { qAppPromise } = this;
       const qAppp = await qAppPromise;
-
+      console.log('Try to PARSE selections in App:');
+      console.log(qAppp);
       const valuesFromLocalStorage = JSON.parse(selections);
 
-      console.log(`setSelections${JSON.stringify(valuesFromLocalStorage)}`);
+
+      console.log(`QdtComponents setSelections${JSON.stringify(valuesFromLocalStorage)}`);
 
       if (valuesFromLocalStorage !== null && valuesFromLocalStorage.length > 0) {
         for (let i = 0; i < valuesFromLocalStorage.length; i++) {
@@ -84,10 +86,13 @@ const QdtComponents = class {
               res.push({ qText: selectedArrayTrimmed[k] });
             }
             qAppp.field(locField).selectValues(res, false, true);
+            console.log('res=');
+            console.log(res);
           }
         }
       } else {
-        qAppp.clearAll();
+        // qAppp.clearAll();
+        console.log('TRY TO qAppp.clearAll');
       }
     } catch (error) {
       console.log(error);
