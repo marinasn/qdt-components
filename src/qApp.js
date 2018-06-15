@@ -36,9 +36,12 @@ const qApp = async (config) => {
     return new Promise((resolve) => {
       window.require(['js/qlik'], (qlik) => {
         const app = qlik.openApp(config.appId, { ...config, isSecure: config.secure, prefix });
+        console.log('QdtComponents Check 0 after openApp selectItemLocalStorage =', localStorage.getItem('selectItemLocalStorage'));
+
         app.getList('SelectionObject', function (reply) {
           let loc_selections = [];
           let j;
+          console.log('QdtComponents Check 1 selectItemLocalStorage =', localStorage.getItem('selectItemLocalStorage'));
 
           for (j = 0; j < reply.qSelectionObject.qSelections.length; j++) {
             loc_selections.push({
@@ -47,18 +50,19 @@ const qApp = async (config) => {
             });
           }
 
+          console.log('QdtComponents Check 2 selectItemLocalStorage =', localStorage.getItem('selectItemLocalStorage'));
+          console.log(`QdtComponents loc_selections ${JSON.stringify(loc_selections)}`);
+
           if (localStorage.getItem('selectItemLocalStorage') !== JSON.stringify(loc_selections)) {
             localStorage.setItem('selectItemLocalStorage', JSON.stringify(loc_selections));
             localStorage.setItem('lastQlikAppId', app.id);
 
             console.log(`QdtComponents setItem selectItemLocalStorage ${JSON.stringify(loc_selections)}`);
-            console.log('QdtComponents setItem lastQlikAppId =', app.id);
           }
           loc_selections = [];
         });
-        console.log('QdtComponents Check value from selectItemLocalStorage =', localStorage.getItem('selectItemLocalStorage'));
         resolve(app);
-        console.log('QdtComponents Check after resolve from selectItemLocalStorage =', localStorage.getItem('selectItemLocalStorage'));
+        console.log('QdtComponents Check 3 after resolve from selectItemLocalStorage =', localStorage.getItem('selectItemLocalStorage'));
       });
     });
   } catch (error) {
