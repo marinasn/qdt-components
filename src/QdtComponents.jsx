@@ -58,7 +58,7 @@ const QdtComponents = class {
       const valuesFromLocalStorage = JSON.parse(selections);
 
 
-      console.log(`QdtComponents setSelections${JSON.stringify(valuesFromLocalStorage)}`);
+      console.log(`QdtComponents.setSelections valuesFromLocalStorage${JSON.stringify(valuesFromLocalStorage)}`);
 
       if (valuesFromLocalStorage !== null && valuesFromLocalStorage.length > 0) {
         for (let i = 0; i < valuesFromLocalStorage.length; i++) {
@@ -86,8 +86,7 @@ const QdtComponents = class {
               res.push({ qText: selectedArrayTrimmed[k] });
             }
             qAppp.field(locField).selectValues(res, false, true);
-            console.log('res=');
-            console.log(res);
+            console.log('QdtComponents.setSelections res=', res);
           }
         }
       } else {

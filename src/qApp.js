@@ -1,4 +1,4 @@
-/* eslint-disable camelcase,prefer-arrow-callback,no-plusplus,comma-dangle */
+/* eslint-disable camelcase,prefer-arrow-callback,no-plusplus,comma-dangle,no-trailing-spaces */
 const loadCapabilityApis = async (config) => {
   try {
     const capabilityApisCSS = document.createElement('link');
@@ -56,7 +56,9 @@ const qApp = async (config) => {
           }
           loc_selections = [];
         });
+        console.log('QdtComponents Check value from selectItemLocalStorage =', localStorage.getItem('selectItemLocalStorage'));
         resolve(app);
+        console.log('QdtComponents Check after resolve from selectItemLocalStorage =', localStorage.getItem('selectItemLocalStorage'));
       });
     });
   } catch (error) {
