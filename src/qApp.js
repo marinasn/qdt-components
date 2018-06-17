@@ -48,7 +48,7 @@ const qApp = async (config) => {
 
 
           const newPageApp = (app.id !== localStorage.getItem('lastQlikAppId') || app.id !== localStorage.getItem('lastFilterAppId'));
-          console.log('QdtComponents ---------------------------------------------------');
+          console.log('QdtComponents --------------------------------------------------- newPageApp=', newPageApp);
           console.log('QdtComponents Check 2 selectItemLocalStorage =', localStorage.getItem('selectItemLocalStorage'), ' loc_selections=', JSON.stringify(loc_selections));
           console.log('QdtComponents  app.id=', app.id, ' lastQlikAppId=', localStorage.getItem('lastQlikAppId'), 'lastFilterAppId=', localStorage.getItem('lastFilterAppId'));
  
@@ -61,11 +61,11 @@ const qApp = async (config) => {
           console.log(`QdtComponents loc_selections ${JSON.stringify(loc_selections)}`);
 
 
-          // const applyLocSelections = !(JSON.stringify(loc_selections) === '[]' &&
-          //     (app.id !== localStorage.getItem('lastQlikAppId') || app.id !== localStorage.getItem('lastFilterAppId')));
-          console.log('(selectItemLocalStorage !== loc_selections?', (localStorage.getItem('selectItemLocalStorage') !== JSON.stringify(loc_selections)));
+          const applyLocSelections = !(JSON.stringify(loc_selections) === '[]' &&
+               (app.id !== localStorage.getItem('lastQlikAppId') || app.id !== localStorage.getItem('lastFilterAppId')));
+          console.log('applyLocSelections=', applyLocSelections, '(selectItemLocalStorage !== loc_selections?', (localStorage.getItem('selectItemLocalStorage') !== JSON.stringify(loc_selections)));
           
-          if ((localStorage.getItem('selectItemLocalStorage') !== JSON.stringify(loc_selections)) || newPageApp) {
+          if ((localStorage.getItem('selectItemLocalStorage') !== JSON.stringify(loc_selections)) && applyLocSelections) {
             console.log(`QdtComponents setItem selectItemLocalStorage ${JSON.stringify(loc_selections)}`);
             localStorage.setItem('selectItemLocalStorage', JSON.stringify(loc_selections));
             localStorage.setItem('lastQlikAppId', app.id);
