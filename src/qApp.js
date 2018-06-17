@@ -52,11 +52,11 @@ const qApp = async (config) => {
           console.log('QdtComponents Check 2 selectItemLocalStorage =', localStorage.getItem('selectItemLocalStorage'), ' loc_selections=', JSON.stringify(loc_selections));
           console.log('QdtComponents  app.id=', app.id, ' lastQlikAppId=', localStorage.getItem('lastQlikAppId'), 'lastFilterAppId=', localStorage.getItem('lastFilterAppId'));
  
-          if (newPageApp) {
+          /*          if (newPageApp) {
             console.log('QdtComponents . set this.loc_selections from  localStorage. newPageApp=', newPageApp);
             loc_selections = localStorage.getItem('selectItemLocalStorage');
             console.log(loc_selections);
-          }
+          } */
 
           console.log(`QdtComponents loc_selections ${JSON.stringify(loc_selections)}`);
 
