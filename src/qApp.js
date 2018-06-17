@@ -53,8 +53,9 @@ const qApp = async (config) => {
           console.log('QdtComponents  app.id=', app.id, ' lastQlikAppId=', localStorage.getItem('lastQlikAppId'), 'lastFilterAppId=', localStorage.getItem('lastFilterAppId'));
  
           if (newPageApp) {
-            console.log('QdtComponents newPageApp. set this.loc_selections from  localStorage');
+            console.log('QdtComponents . set this.loc_selections from  localStorage. newPageApp=', newPageApp);
             this.loc_selections = localStorage.getItem('selectItemLocalStorage');
+            console.log(this.loc_selections);
           }
 
           console.log(`QdtComponents loc_selections ${JSON.stringify(loc_selections)}`);
@@ -62,9 +63,9 @@ const qApp = async (config) => {
 
           // const applyLocSelections = !(JSON.stringify(loc_selections) === '[]' &&
           //     (app.id !== localStorage.getItem('lastQlikAppId') || app.id !== localStorage.getItem('lastFilterAppId')));
-
+          console.log('(selectItemLocalStorage !== loc_selections?', (localStorage.getItem('selectItemLocalStorage') !== JSON.stringify(loc_selections)));
           
-          if (localStorage.getItem('selectItemLocalStorage') !== JSON.stringify(loc_selections) || newPageApp) {
+          if ((localStorage.getItem('selectItemLocalStorage') !== JSON.stringify(loc_selections)) || newPageApp) {
             console.log(`QdtComponents setItem selectItemLocalStorage ${JSON.stringify(loc_selections)}`);
             localStorage.setItem('selectItemLocalStorage', JSON.stringify(loc_selections));
             localStorage.setItem('lastQlikAppId', app.id);
