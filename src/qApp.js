@@ -57,7 +57,7 @@ const qApp = async (config) => {
           if (localStorage.getItem('selectItemLocalStorage') !== JSON.stringify(loc_selections) &&
                 !(loc_selections === [] && app.id !== localStorage.getItem('lastQlikAppId'))) {
             localStorage.setItem('selectItemLocalStorage', JSON.stringify(loc_selections));
-            localStorage.setItem('lastQlikAppId', app.id);
+            // localStorage.setItem('lastQlikAppId', app.id);
 
             console.log(`QdtComponents setItem selectItemLocalStorage ${JSON.stringify(loc_selections)}`);
           }
