@@ -66,11 +66,18 @@ const qApp = async (config) => {
 
           console.log('applyLocSelections=', applyLocSelections, '(selectItemLocalStorage !== loc_selections?', (localStorage.getItem('selectItemLocalStorage') !== JSON.stringify(loc_selections)));
           
+          if ((localStorage.getItem('selectItemLocalStorage') !== JSON.stringify(loc_selections)) && newPageApp) {
+            // localStorage.setItem('selectItemLocalStorageTEST', `${JSON.stringify(loc_selections)}~${app.id}`);
+
+            const fields = localStorage.getItem('selectItemLocalStorageTEST').split('~');
+            const lastLocselected = fields[0];
+
+            localStorage.setItem('selectItemLocalStorageTEST', `${lastLocselected}~${app.id}`);
+          }
+
           if ((localStorage.getItem('selectItemLocalStorage') !== JSON.stringify(loc_selections)) && applyLocSelections) {
             console.log(`QdtComponents setItem selectItemLocalStorage ${JSON.stringify(loc_selections)}`);
             localStorage.setItem('selectItemLocalStorage', JSON.stringify(loc_selections));
-            localStorage.setItem('selectItemLocalStorageTEST', `${JSON.stringify(loc_selections)}~${app.id}`);
-            localStorage.getItem('selectItemLocalStorageTEST');
             localStorage.setItem('lastQlikAppId', app.id);
           }
 
