@@ -52,8 +52,10 @@ const qApp = async (config) => {
 
           console.log('QdtComponents Check 2 selectItemLocalStorage =', localStorage.getItem('selectItemLocalStorage'));
           console.log(`QdtComponents loc_selections ${JSON.stringify(loc_selections)}`);
+          console.log('QdtComponents  app.id=', app.id, ' lastQlikAppId=', localStorage.getItem('lastQlikAppId'));
 
-          if (localStorage.getItem('selectItemLocalStorage') !== JSON.stringify(loc_selections)) {
+          if (localStorage.getItem('selectItemLocalStorage') !== JSON.stringify(loc_selections) &&
+                !(loc_selections === [] && app.id !== localStorage.getItem('lastQlikAppId'))) {
             localStorage.setItem('selectItemLocalStorage', JSON.stringify(loc_selections));
             localStorage.setItem('lastQlikAppId', app.id);
 
