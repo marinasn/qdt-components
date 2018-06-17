@@ -51,11 +51,12 @@ const qApp = async (config) => {
             });
           }
 
-          const applyLocSelections = !(loc_selections === init_loc_selections &&
+          const applyLocSelections = !(JSON.stringify(loc_selections) === '[]' &&
               (app.id !== localStorage.getItem('lastQlikAppId') || app.id !== localStorage.getItem('lastFilterAppId')));
           console.log('QdtComponents Check 2 selectItemLocalStorage =', localStorage.getItem('selectItemLocalStorage'), ' loc_selections=', JSON.stringify(loc_selections));
           console.log('QdtComponents  app.id=', app.id, ' lastQlikAppId=', localStorage.getItem('lastQlikAppId'), 'lastFilterAppId=', localStorage.getItem('lastFilterAppId'));
           console.log(`QdtComponents loc_selections ${JSON.stringify(loc_selections)}`);
+
           console.log('QdtComponents applyLocSelections=', applyLocSelections);
 
           const newPageApp = (app.id !== localStorage.getItem('lastQlikAppId') || app.id !== localStorage.getItem('lastFilterAppId'));
@@ -63,7 +64,7 @@ const qApp = async (config) => {
 
           console.log('QdtComponents (app.id !== lastQlikAppId? ', app.id !== localStorage.getItem('lastQlikAppId'));
           console.log('QdtComponents (app.id !== lastFilterAppId? ', app.id !== localStorage.getItem('lastFilterAppId'));
-          console.log('QdtComponents loc_selections === init_loc_selections? ', loc_selections === init_loc_selections);
+          console.log('QdtComponents init_loc_selections= ', init_loc_selections);
 
 
           if (localStorage.getItem('selectItemLocalStorage') !== JSON.stringify(loc_selections) &&
