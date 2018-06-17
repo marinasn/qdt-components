@@ -52,12 +52,14 @@ const qApp = async (config) => {
           }
 
           if (localStorage.getItem('selectItemLocalStorage') !== JSON.stringify(loc_selections) &&
-                !(loc_selections === init_loc_selections && app.id !== localStorage.getItem('lastQlikAppId'))) {
+                !(loc_selections === init_loc_selections &&
+                    (app.id !== localStorage.getItem('lastQlikAppId') || app.id !== localStorage.getItem('lastFilterAppId'))
+                )) {
             console.log('QdtComponents Check 2 selectItemLocalStorage =', localStorage.getItem('selectItemLocalStorage'));
-            console.log('QdtComponents  app.id=', app.id, ' lastQlikAppId=', localStorage.getItem('lastQlikAppId'));
+            console.log('QdtComponents  app.id=', app.id, ' lastQlikAppId=', localStorage.getItem('lastQlikAppId'), 'lastFilterAppId=', localStorage.getItem('lastFilterAppId'));
             console.log(`QdtComponents setItem selectItemLocalStorage ${JSON.stringify(loc_selections)}`);
             localStorage.setItem('selectItemLocalStorage', JSON.stringify(loc_selections));
-            // localStorage.setItem('lastQlikAppId', app.id);
+            localStorage.setItem('lastQlikAppId', app.id);
           }
           loc_selections = [];
         });
