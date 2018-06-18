@@ -49,8 +49,8 @@ const qApp = async (config) => {
 
           const newPageApp = (app.id !== localStorage.getItem('lastQlikAppId') || app.id !== localStorage.getItem('lastFilterAppId'));
           console.log('QdtComponents --------------------------------------------------- newPageApp=', newPageApp);
-          console.log('QdtComponents Check 2 selectItemLocalStorage =', localStorage.getItem('selectItemLocalStorage'), ' loc_selections=', JSON.stringify(loc_selections), ' length=', loc_selections.length);
-          console.log('QdtComponents  app.id=', app.id, ' lastQlikAppId=', localStorage.getItem('lastQlikAppId'), 'lastFilterAppId=', localStorage.getItem('lastFilterAppId'));
+          console.log('QdtComponents Check 2 selectItemLocalStorage =', localStorage.getItem('selectItemLocalStorage'), ' loc_selections=', JSON.stringify(loc_selections));
+          console.log('QdtComponents  app.id=', app.id, ' lastQlikAppId=', localStorage.getItem('lastQlikAppId'));
  
           console.log(`QdtComponents loc_selections ${JSON.stringify(loc_selections)}`);
 
@@ -66,15 +66,13 @@ const qApp = async (config) => {
 
           if (locstorage !== null && locstorage.length > 0) {
             const fields = locstorage.split('~');
-            console.log('QdtComponents  locstorage.fields[0]=', fields[0]);
-            // lastLocselected = JSON.stringify(fields[0]);
+
             lastLocselected = fields[0].toString();
             console.log('QdtComponents  selectItemLocalStorage lastLocselected=', lastLocselected);
-            // const c_lastLocselected = `${JSON.stringify(lastLocselected)}~${app.id}`;
-            // const c_lastLocselected = `${lastLocselected}~${app.id}`;
-            const c_lastLocselected = { lastLocselected }.concat('~', app.id);
+            const c_lastLocselected2 = `$(lastLocselected)~${app.id}`;
+            const c_lastLocselected = lastLocselected.concat('~', app.id);
 
-            console.log('QdtComponents  selectItemLocalStorage c_lastLocselected=', c_lastLocselected);
+            console.log('QdtComponents  c_lastLocselected=', c_lastLocselected, 'c_lastLocselected2=', c_lastLocselected2);
 
 
             if ((lastLocselected !== JSON.stringify(loc_selections)) &&
