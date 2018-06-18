@@ -59,16 +59,16 @@ const qApp = async (config) => {
               !(JSON.stringify(loc_selections) === '[]' && newPageApp);
 
           console.log('applyLocSelections=', applyLocSelections);
-          let lastLocselected = [];
+
           const locstorage = localStorage.getItem('selectItemLocalStorage');
+          let lastLocselected = [];
 
 
           if (locstorage !== null && locstorage.length > 0) {
             const fields = locstorage.split('~');
-            console.log('QdtComponents  locstorage.fields[0]=');
-            console.log(fields[0]);
-
-            lastLocselected = JSON.stringify(fields[0]);
+            console.log('QdtComponents  locstorage.fields[0]=', fields[0]);
+            // lastLocselected = JSON.stringify(fields[0]);
+            lastLocselected = fields[0].toString();
             console.log('QdtComponents  selectItemLocalStorage lastLocselected=', lastLocselected);
             // const c_lastLocselected = `${JSON.stringify(lastLocselected)}~${app.id}`;
             // const c_lastLocselected = `${lastLocselected}~${app.id}`;
