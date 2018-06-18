@@ -65,17 +65,21 @@ const qApp = async (config) => {
 
           if (locstorage !== null && locstorage.length > 0) {
             const fields = locstorage.split('~');
+            console.log('QdtComponents  locstorage.fields[0]=');
+            console.log(fields[0]);
+
             lastLocselected = JSON.stringify(fields[0]);
             console.log('QdtComponents  selectItemLocalStorage lastLocselected=', lastLocselected);
             // const c_lastLocselected = `${JSON.stringify(lastLocselected)}~${app.id}`;
-            const c_lastLocselected = `${lastLocselected}~${app.id}`;
+            // const c_lastLocselected = `${lastLocselected}~${app.id}`;
+            const c_lastLocselected = { lastLocselected }.concat('~', app.id);
 
             console.log('QdtComponents  selectItemLocalStorage c_lastLocselected=', c_lastLocselected);
 
 
             if ((lastLocselected !== JSON.stringify(loc_selections)) &&
               (JSON.stringify(loc_selections) === '[]' && newPageApp)) {
-              // localStorage.setItem('selectItemLocalStorage', c_lastLocselected);
+              localStorage.setItem('selectItemLocalStorage', c_lastLocselected);
               console.log('QdtComponents newPageApp TRY to setItem selectItemLocalStorage lastLocselected=', c_lastLocselected);
             }
           }
