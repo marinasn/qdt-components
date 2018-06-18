@@ -65,21 +65,25 @@ const qApp = async (config) => {
               !(JSON.stringify(loc_selections) === '[]' && newPageApp);
 
           console.log('applyLocSelections=', applyLocSelections, '(selectItemLocalStorage !== loc_selections?', (localStorage.getItem('selectItemLocalStorage') !== JSON.stringify(loc_selections)));
-          
-          if ((localStorage.getItem('selectItemLocalStorage') !== JSON.stringify(loc_selections)) && newPageApp) {
+
+          const fields = localStorage.getItem('selectItemLocalStorage').split('~');
+          const lastLocselected = fields[0];
+          console.log('QdtComponents  selectItemLocalStorage', JSON.stringify(lastLocselected));
+
+          if ((JSON.stringify(lastLocselected) !== JSON.stringify(loc_selections)) &&
+              (JSON.stringify(loc_selections) === '[]' && newPageApp)) {
             // localStorage.setItem('selectItemLocalStorageTEST', `${JSON.stringify(loc_selections)}~${app.id}`);
 
-            const fields = localStorage.getItem('selectItemLocalStorageTEST').split('~');
-            const lastLocselected = fields[0];
-
-            localStorage.setItem('selectItemLocalStorageTEST', `${lastLocselected}~${app.id}`);
+            localStorage.setItem('selectItemLocalStorage', `${lastLocselected}~${app.id}`);
+            console.log('QdtComponents setItem selectItemLocalStorage', `${lastLocselected}~${app.id}`);
           }
 
-          if ((localStorage.getItem('selectItemLocalStorage') !== JSON.stringify(loc_selections)) && applyLocSelections) {
+          if ((JSON.stringify(lastLocselected) !== JSON.stringify(loc_selections)) && applyLocSelections) {
             console.log(`QdtComponents setItem selectItemLocalStorage ${JSON.stringify(loc_selections)}`);
-            localStorage.setItem('selectItemLocalStorage', JSON.stringify(loc_selections));
-            localStorage.setItem('lastQlikAppId', app.id);
+            localStorage.setItem('selectItemLocalStorage', `${loc_selections}~${app.id}`);
+            //  localStorage.setItem('selectItemLocalStorage', JSON.stringify(loc_selections));
           }
+          localStorage.setItem('lastQlikAppId', app.id);
 
           loc_selections = [];
         });
