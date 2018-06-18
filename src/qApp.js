@@ -59,22 +59,28 @@ const qApp = async (config) => {
               !(JSON.stringify(loc_selections) === '[]' && newPageApp);
 
           console.log('applyLocSelections=', applyLocSelections);
-
           let lastLocselected = [];
-          const fields = localStorage.getItem('selectItemLocalStorage').split('~');
-          lastLocselected = JSON.stringify(fields[0]);
-          console.log('QdtComponents  selectItemLocalStorage lastLocselected=', lastLocselected);
-          // const c_lastLocselected = `${JSON.stringify(lastLocselected)}~${app.id}`;
-          const c_lastLocselected = `${lastLocselected}~${app.id}`;
+          const locstorage = localStorage.getItem('selectItemLocalStorage');
 
-          console.log('QdtComponents  selectItemLocalStorage c_lastLocselected=', c_lastLocselected);
 
-          if ((lastLocselected !== JSON.stringify(loc_selections)) &&
+          if (locstorage !== null && locstorage.length > 0) {
+            const fields = locstorage.split('~');
+            lastLocselected = JSON.stringify(fields[0]);
+            console.log('QdtComponents  selectItemLocalStorage lastLocselected=', lastLocselected);
+            // const c_lastLocselected = `${JSON.stringify(lastLocselected)}~${app.id}`;
+            const c_lastLocselected = `${lastLocselected}~${app.id}`;
+
+            console.log('QdtComponents  selectItemLocalStorage c_lastLocselected=', c_lastLocselected);
+
+
+            if ((lastLocselected !== JSON.stringify(loc_selections)) &&
               (JSON.stringify(loc_selections) === '[]' && newPageApp)) {
             // localStorage.setItem('selectItemLocalStorage', `${lastLocselected}~${app.id}`);
-            localStorage.setItem('selectItemLocalStorage', c_lastLocselected);
-            console.log('QdtComponents newPageApp setItem selectItemLocalStorage lastLocselected=', c_lastLocselected);
+              localStorage.setItem('selectItemLocalStorage', c_lastLocselected);
+              console.log('QdtComponents newPageApp setItem selectItemLocalStorage lastLocselected=', c_lastLocselected);
+            }
           }
+
 
           if ((lastLocselected !== JSON.stringify(loc_selections)) && applyLocSelections) {
             console.log(`QdtComponents setItem selectItemLocalStorage ${JSON.stringify(loc_selections)}`);
