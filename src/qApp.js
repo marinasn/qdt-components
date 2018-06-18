@@ -51,14 +51,11 @@ const qApp = async (config) => {
           console.log('QdtComponents --------------------------------------------------- newPageApp=', newPageApp);
           console.log('QdtComponents Check 2 selectItemLocalStorage =', localStorage.getItem('selectItemLocalStorage'), ' loc_selections=', JSON.stringify(loc_selections));
           console.log('QdtComponents  app.id=', app.id, ' lastQlikAppId=', localStorage.getItem('lastQlikAppId'));
- 
-          console.log(`QdtComponents loc_selections ${JSON.stringify(loc_selections)}`);
-
 
           const applyLocSelections = (!(JSON.stringify(loc_selections) === '[]')) ||
               !(JSON.stringify(loc_selections) === '[]' && newPageApp);
 
-          console.log('applyLocSelections=', applyLocSelections);
+          console.log('QdtComponents loc_selections', JSON.stringify(loc_selections), ' applyLocSelections=', applyLocSelections);
 
           const locstorage = localStorage.getItem('selectItemLocalStorage');
           let lastLocselected = [];
@@ -69,24 +66,24 @@ const qApp = async (config) => {
 
             lastLocselected = fields[0].toString();
             console.log('QdtComponents  selectItemLocalStorage lastLocselected=', lastLocselected);
-            const c_lastLocselected2 = `$(lastLocselected)~${app.id}`;
             const c_lastLocselected = lastLocselected.concat('~', app.id);
 
-            console.log('QdtComponents  c_lastLocselected=', c_lastLocselected, 'c_lastLocselected2=', c_lastLocselected2);
+            console.log('QdtComponents  c_lastLocselected=', c_lastLocselected);
 
 
             if ((lastLocselected !== JSON.stringify(loc_selections)) &&
               (JSON.stringify(loc_selections) === '[]' && newPageApp)) {
               localStorage.setItem('selectItemLocalStorage', c_lastLocselected);
-              console.log('QdtComponents newPageApp TRY to setItem selectItemLocalStorage lastLocselected=', c_lastLocselected);
+              console.log('QdtComponents newPageApp TRY to setItem selectItemLocalStorage lastLocselected=', c_lastLocselected, 'OLD App=', fields[1].toString());
             }
           }
 
 
           if ((lastLocselected !== JSON.stringify(loc_selections)) && applyLocSelections) {
-            console.log(`QdtComponents setItem selectItemLocalStorage ${JSON.stringify(loc_selections)}`);
-            // localStorage.setItem('selectItemLocalStorage', `${loc_selections}~${app.id}`);
-            localStorage.setItem('selectItemLocalStorage', JSON.stringify(loc_selections));
+            const c_loc_selections = JSON.stringify(loc_selections).concat('~', app.id);
+            console.log('QdtComponents setItem selectItemLocalStorage', c_loc_selections);
+            localStorage.setItem('selectItemLocalStorage', c_loc_selections);
+            // localStorage.setItem('selectItemLocalStorage', JSON.stringify(loc_selections));
           }
           localStorage.setItem('lastQlikAppId', app.id);
 
