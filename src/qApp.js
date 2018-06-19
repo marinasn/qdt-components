@@ -62,7 +62,8 @@ const qApp = async (config) => {
           if (locstorage !== null && locstorage.length > 0) {
             const fields = locstorage.split('~');
             lastLocselected = fields[0].toString();
-            const c_lastLocselected = lastLocselected.concat('~', app.id);
+            // const c_lastLocselected = lastLocselected.concat('~', app.id);
+            const c_lastLocselected = lastLocselected;
 
             console.log('QdtComponents  c_lastLocselected=', c_lastLocselected);
 
@@ -76,7 +77,8 @@ const qApp = async (config) => {
 
 
           if ((lastLocselected !== JSON.stringify(loc_selections)) && applyLocSelections) {
-            const c_loc_selections = JSON.stringify(loc_selections).concat('~', app.id);
+            // const c_loc_selections = JSON.stringify(loc_selections).concat('~', app.id);
+            const c_loc_selections = JSON.stringify(loc_selections);
             console.log('QdtComponents setItem selectItemLocalStorage', c_loc_selections);
             localStorage.setItem('selectItemLocalStorage', c_loc_selections);
             // localStorage.setItem('selectItemLocalStorage', JSON.stringify(loc_selections));
