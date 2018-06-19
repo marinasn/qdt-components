@@ -47,10 +47,9 @@ const qApp = async (config) => {
           }
 
 
-          const newPageApp = (app.id !== localStorage.getItem('lastQlikAppId') || app.id !== localStorage.getItem('lastFilterAppId'));
-          console.log('QdtComponents --------------------------------------------------- newPageApp=', newPageApp);
+          const newPageApp = (app.id !== localStorage.getItem('lastQlikAppId'));
+          console.log('QdtComponents --------------------------------------------------- newPageApp=', newPageApp, ' lastQlikAppId=', localStorage.getItem('lastQlikAppId'));
           console.log('QdtComponents Check 2 selectItemLocalStorage =', localStorage.getItem('selectItemLocalStorage'), ' loc_selections=', JSON.stringify(loc_selections));
-          console.log('QdtComponents  app.id=', app.id, ' lastQlikAppId=', localStorage.getItem('lastQlikAppId'));
 
           const applyLocSelections = (!(JSON.stringify(loc_selections) === '[]')) ||
               !(JSON.stringify(loc_selections) === '[]' && newPageApp);
@@ -60,12 +59,9 @@ const qApp = async (config) => {
           const locstorage = localStorage.getItem('selectItemLocalStorage');
           let lastLocselected = [];
 
-
           if (locstorage !== null && locstorage.length > 0) {
             const fields = locstorage.split('~');
-
             lastLocselected = fields[0].toString();
-            console.log('QdtComponents  selectItemLocalStorage lastLocselected=', lastLocselected);
             const c_lastLocselected = lastLocselected.concat('~', app.id);
 
             console.log('QdtComponents  c_lastLocselected=', c_lastLocselected);
@@ -74,7 +70,7 @@ const qApp = async (config) => {
             if ((lastLocselected !== JSON.stringify(loc_selections)) &&
               (JSON.stringify(loc_selections) === '[]' && newPageApp)) {
               localStorage.setItem('selectItemLocalStorage', c_lastLocselected);
-              console.log('QdtComponents newPageApp TRY to setItem selectItemLocalStorage lastLocselected=', c_lastLocselected, 'OLD App=', fields[1].toString());
+              console.log('QdtComponents ------- NEWPAGEAPP TRY to setItem selectItemLocalStorage lastLocselected=', c_lastLocselected, 'OLD App=', fields[1].toString());
             }
           }
 
