@@ -19,10 +19,16 @@ const components = {
   QdtFilter, QdtTable, QdtViz, QdtSelectionToolbar, QdtKpi, QdtButton, QdtPicasso, QdtSearch, QdtCurrentSelections,
 };
 
+function isNumber(n) {
+  return !Number.isNaN(parseFloat(n)) && Number.isFinite(parseFloat(n));
+}
+
 const QdtComponents = class {
   static picasso = {
     settings,
   };
+
+  // fields = ['Год', 'Месяц', 'Год - Неделя', 'Неделя'];
 
   constructor(config = {}, connections = { vizApi: true, engineApi: true }) {
     const myConfig = config;
@@ -49,49 +55,38 @@ const QdtComponents = class {
     }
   });
 
-  async setSelections(selections) {
+  async setSelections(selection) {
     try {
       const { qAppPromise } = this;
       const qAppp = await qAppPromise;
-      console.log('Try to PARSE selections in App:');
-      console.log(qAppp);
-      const valuesFromLocalStorage = JSON.parse(selections);
 
+      const valuesFromLocalStorage = JSON.parse(selection);
+      console.log('setSelections valuesFromLocalStorage =', valuesFromLocalStorage);
 
-      console.log(`QdtComponents.setSelections valuesFromLocalStorage${JSON.stringify(valuesFromLocalStorage)}`);
+      if (valuesFromLocalStorage !== null) {
+        const locField = valuesFromLocalStorage.field;
+        const locSelected = JSON.parse(valuesFromLocalStorage.selected);
 
-      if (valuesFromLocalStorage !== null && valuesFromLocalStorage.length > 0) {
-        for (let i = 0; i < valuesFromLocalStorage.length; i++) {
-          const locField = valuesFromLocalStorage[i].field;
-          const locSelected = valuesFromLocalStorage[i].selected;
-          let selectedArrayNotTrimmed = [];
-
-          selectedArrayNotTrimmed = locSelected.split(',');
-          const selectedArrayTrimmed = [];
-
-          for (let j = 0; j < selectedArrayNotTrimmed.length; j++) {
-            selectedArrayTrimmed[j] = selectedArrayNotTrimmed[j].trim();
-          }
-          if (selectedArrayTrimmed[0] == null) {
-            let res = [];
-            res = locSelected.split(',').map(item => parseInt(item, 10));
-
-            qAppp.field(locField).selectValues(res, false, true);
-          } else if (selectedArrayTrimmed[0] === 'ALL') {
-            qAppp.field(locField).selectAll();
-          } else {
-            const res = [];
-
-            for (let k = 0; k < selectedArrayTrimmed.length; k++) {
-              res.push({ qText: selectedArrayTrimmed[k] });
-            }
-            qAppp.field(locField).selectValues(res, false, true);
-            console.log('QdtComponents.setSelections res=', res);
-          }
+        if (locSelected === null) {
+          console.log('setSelections field =', locField, 'res array = null');
+          qAppp.field(locField).clear();
+        } else if (locSelected[0] === 'ALL') {
+          console.log('setSelections field =', locField, 'res array = selectAll');
+          qAppp.field(locField).selectAll();
+        } else if (isNumber(locSelected[0])) {
+          let res = [];
+          res = locSelected.map(item => parseInt(item, 10));
+          console.log('setSelections field =', locField, 'res array Numeric =', JSON.stringify(res));
+          qAppp.field(locField).selectValues(res, false, true);
+        } else {
+          const res = [];
+          locSelected.forEach(value => res.push({ qText: value }));
+          console.log('setSelections field =', locField, 'res array =', JSON.stringify(res));
+          qAppp.field(locField).selectValues(res, false, true);
         }
       } else {
-        // qAppp.clearAll();
-        console.log('TRY TO qAppp.clearAll');
+        console.log('setSelections clearAll =', JSON.stringify(valuesFromLocalStorage));
+        qAppp.clearAll();
       }
     } catch (error) {
       console.log(error);

@@ -1,4 +1,4 @@
-/* eslint-disable camelcase,prefer-arrow-callback,no-plusplus,comma-dangle,no-trailing-spaces */
+/* eslint-disable camelcase,prefer-arrow-callback,no-plusplus,comma-dangle,no-loop-func,no-undef */
 const loadCapabilityApis = async (config) => {
   try {
     const capabilityApisCSS = document.createElement('link');
@@ -23,6 +23,8 @@ const loadCapabilityApis = async (config) => {
   }
 };
 
+const fields = ['Год', 'Месяц', 'Месяц-год', 'Неделя'];
+
 const qApp = async (config) => {
   try {
     await loadCapabilityApis(config);
@@ -36,57 +38,42 @@ const qApp = async (config) => {
     return new Promise((resolve) => {
       window.require(['js/qlik'], (qlik) => {
         const app = qlik.openApp(config.appId, { ...config, isSecure: config.secure, prefix });
-        app.getList('SelectionObject', function (reply) {
-          let loc_selections = [];
-          let j;
-          for (j = 0; j < reply.qSelectionObject.qSelections.length; j++) {
-            loc_selections.push({
-              field: reply.qSelectionObject.qSelections[j].qField,
-              selected: reply.qSelectionObject.qSelections[j].qSelected
-            });
-          }
-
-
-          const newPageApp = (app.id !== localStorage.getItem('lastQlikAppId'));
-          console.log('QdtComponents --------------------------------------------------- newPageApp=', newPageApp, ' lastQlikAppId=', localStorage.getItem('lastQlikAppId'));
-          console.log('QdtComponents Check 2 selectItemLocalStorage =', localStorage.getItem('selectItemLocalStorage'), ' loc_selections=', JSON.stringify(loc_selections));
-
-          const applyLocSelections = (!(JSON.stringify(loc_selections) === '[]')) ||
-              !(JSON.stringify(loc_selections) === '[]' && newPageApp);
-
-          console.log('QdtComponents loc_selections', JSON.stringify(loc_selections), ' applyLocSelections=', applyLocSelections);
-
-          const locstorage = localStorage.getItem('selectItemLocalStorage');
-          let lastLocselected = [];
-
-          if (locstorage !== null && locstorage.length > 0) {
-            const fields = locstorage.split('~');
-            lastLocselected = fields[0].toString();
-            // const c_lastLocselected = lastLocselected.concat('~', app.id);
-            const c_lastLocselected = lastLocselected;
-
-            console.log('QdtComponents  c_lastLocselected=', c_lastLocselected);
-
-
-            if ((lastLocselected !== JSON.stringify(loc_selections)) &&
-              (JSON.stringify(loc_selections) === '[]' && newPageApp)) {
-              localStorage.setItem('selectItemLocalStorage', c_lastLocselected);
-              console.log('QdtComponents ------- NEWPAGEAPP TRY to setItem selectItemLocalStorage lastLocselected=', c_lastLocselected, 'OLD App=', fields[1].toString());
+        for (let i = 0; i < fields.length; i++) {
+          console.log('field:', fields[i]);
+          app.createList({
+            qDef: {
+              qFieldDefs: [fields[i]] // set fieldname
+            },
+            qAutoSortByState: {
+              qDisplayNumberOfRows: 1
+            },
+            qInitialDataFetch: [{
+              qHeight: 1000, // can set number of rows returned
+              qWidth: 1
+            }]
+          }, function (reply) {
+            // console.log('reply:', reply.qListObject, 'app:', app.id);
+            let rows = [];
+            if (reply.qListObject.qDataPages.length > 0) {
+              console.log('reply:', JSON.stringify(reply.qListObject.qDataPages[0].qMatrix), 'app:', app.id);
+              rows = _.flatten(reply.qListObject.qDataPages[0].qMatrix);
             }
-          }
+            const selected = rows.filter(function (row) {
+              return row.qState === 'S';
+            });
+            const values = [];
+            for (let j = 0; j < selected.length; j++) {
+              values.push(selected[j].qText);
+            }
 
-
-          if ((lastLocselected !== JSON.stringify(loc_selections)) && applyLocSelections) {
-            // const c_loc_selections = JSON.stringify(loc_selections).concat('~', app.id);
-            const c_loc_selections = JSON.stringify(loc_selections);
-            console.log('QdtComponents setItem selectItemLocalStorage', c_loc_selections);
-            localStorage.setItem('selectItemLocalStorage', c_loc_selections);
-            // localStorage.setItem('selectItemLocalStorage', JSON.stringify(loc_selections));
-          }
-          localStorage.setItem('lastQlikAppId', app.id);
-
-          loc_selections = [];
-        });
+            // localStorage.setItem(reply.qListObject.qDimensionInfo.qFallbackTitle, JSON.stringify(values));
+            const fieldName = reply.qListObject.qDimensionInfo.qFallbackTitle;
+            if (localStorage.getItem(fieldName) !== JSON.stringify(values)) {
+              console.log('local storage =', localStorage.getItem(fieldName), 'values =', JSON.stringify(values));
+              localStorage.setItem(fieldName, JSON.stringify(values));
+            }
+          });
+        }
         resolve(app);
       });
     });
